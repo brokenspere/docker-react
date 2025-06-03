@@ -1,0 +1,20 @@
+version: "3"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules # Prevents overwriting node_modules
+      - .:/app # Mounts the current local directory to /app in the container to allow live updates
+  tests:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules # Prevents overwriting node_modules in the test container
+      - .:/app # Mounts the current local directory to /app in the container for test execution
+    command: ["npm", "run", "test"]
